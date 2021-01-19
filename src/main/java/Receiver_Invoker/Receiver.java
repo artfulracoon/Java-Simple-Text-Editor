@@ -1,12 +1,15 @@
+package Receiver_Invoker;
+
 import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
+import Main.*;
 
-public class ActionMethods {
-
+public class Receiver {
+    private TextChangeStack stack;
+    private JTextArea textArea;
     private JFrame frame;
     private String command;
-    private JTextArea textArea;
     private static File dosya;
     private int result;
     private Vocabulary sozluk; //Sözlüğü oluşturuyor. Açıklaması kendi sınıfında.
@@ -14,7 +17,9 @@ public class ActionMethods {
     private String[] parsedText; //verilen parametrelere göre kelimeleri teker teker alıp bir listeye atıyor.
     private JFileChooser fileChooser; // Bazı butonlarda gereken dosya seçme fonksiyonu için diyalog
 
-    public ActionMethods(JFrame aFrame, JTextArea aTextArea, String aCommand) {
+    public Receiver(TextChangeStack thatStack, JFrame aFrame, JTextArea aTextArea, String aCommand) {
+        setStack(thatStack);
+        setTextArea(aTextArea);
         setFrame(aFrame);
         setTextArea(aTextArea);
         setText(getTextArea().getText());
@@ -125,9 +130,9 @@ public class ActionMethods {
         }
     }
 
-    public void geriAl(TextChangeStack stack) { // Değişiklileri geri al.
-        stack.pop(); // Değişiklikleri tutan stack'i parametre olarak aldıktan sonra, stacktaki son değişikliği çıkarıyor.
-        getTextArea().setText(stack.peek()); // Sonuncuyu sildikten sonra text area'yı bir sonraki değişikliğe atıyor.
+    public void geriAl() {
+        getStack().pop();
+        getTextArea().setText(getStack().peek());
     }
 
     public void hataliKelimeDuzelt() {// Hatalı kelimeleri düzeltiyor.
@@ -160,6 +165,15 @@ public class ActionMethods {
                 }
             }
         }
+    }
+
+
+    public TextChangeStack getStack() {
+        return stack;
+    }
+
+    public void setStack(TextChangeStack stack) {
+        this.stack = stack;
     }
 
     public String getText() {
@@ -223,7 +237,7 @@ public class ActionMethods {
     }
 
     public static void setDosya(File dosya) {
-        ActionMethods.dosya = dosya;
+        Receiver.dosya = dosya;
     }
 
     public Vocabulary getSozluk() {

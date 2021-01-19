@@ -1,3 +1,9 @@
+package Main;
+
+import Commands.*;
+import Receiver_Invoker.Invoker;
+import Receiver_Invoker.Receiver;
+
 import javax.swing.*;
 import java.awt.event.*;
 import javax.swing.UIManager;
@@ -12,7 +18,7 @@ class NotepadGUI extends JFrame implements ActionListener {
     public NotepadGUI() { // GUI Constructor
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
 
         setFrame(new JFrame("Ege Notepad App")); // GUI için frame'imizi oluşturuyoruz.
@@ -56,7 +62,7 @@ class NotepadGUI extends JFrame implements ActionListener {
         getFrame().setJMenuBar(menuBar);
         getFrame().add(scrollPane);    // Frame'in özellikleri bekleniyor ve menubar ekleniyor.
         getFrame().setSize(500, 500);
-        getFrame().show();
+        getFrame().setVisible(true);
 
         getFrame().addWindowListener(new WindowAdapter() {
             @Override
@@ -85,39 +91,18 @@ class NotepadGUI extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent event) { // Tıklama durumlarında neler olacağını belirtiyoruz.
-        String command = event.getActionCommand(); // Bastığımız butonun ismi tutuluyor, işlemleri buna göre yapacağız.
-        ActionMethods action = new ActionMethods(getFrame(), getTextArea(), command); // ActionMethods sınıfından fonksiyonları çağırmak için gereken objeyi yaratıyoruz.
         Invoker invoker = new Invoker();
+        Receiver receiver = new Receiver(getStack(), getFrame(), getTextArea(), event.getActionCommand());
 
-        switch (command) {  // Bu switch, butonlara basıldığında hangi aksiyonların gerçekleştirileceğini seçiyor.
-            case "Yeni":    // Aksiyonların dediğimiz gibi ActionMethods sınıfında.
-                action.yeni();  // Caseler ismen kendilerini açıklıyor. Fonksiyon açıklamaları ActionMethods'da.
-                break;
-
-            case "Kaydet":
-                action.kaydet();
-                break;
-
-            case "Aç":
-                action.ac();
-                break;
-
-            case "Kelime Bul ve Değiştir":
-                action.kelimeBulveDegistir();
-                break;
-
-            case "Geri Al":
-                invoker.executeGeriAl(new GeriAlCommand(new Receiver(getStack(), getTextArea())));
-                break;
-
-            case "Hatalı Kelimeleri Düzelt":
-                action.hataliKelimeDuzelt();
-                break;
-
-            case "Kapat":
-                action.kapat();
-                break;
-
+        // Bu switch, butonlara basıldığında hangi aksiyonların gerçekleştirileceğini seçiyor.
+        switch (event.getActionCommand()) {
+            case "Yeni" -> invoker.executeYeni(new YeniCommand(receiver));  // Caseler ismen kendilerini açıklıyor. Fonksiyonlar Commands paketinde.
+            case "Kaydet" -> invoker.executeKaydet(new KaydetCommand(receiver));
+            case "Aç" -> invoker.executeAc(new AcCommand(receiver));
+            case "Kelime Bul ve Değiştir" -> invoker.executeKelimeBulVeDegistir(new KelimeBulVeDegistirCommand(receiver));
+            case "Geri Al" -> invoker.executeGeriAl(new GeriAlCommand(receiver));
+            case "Hatalı Kelimeleri Düzelt" -> invoker.executeHataliKelimeDuzelt(new HataliKelimeleriDuzeltCommand(receiver));
+            case "Kapat" -> invoker.executeKapat(new KapatCommand(receiver));
         }
     }
 
