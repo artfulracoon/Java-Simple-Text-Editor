@@ -1,12 +1,16 @@
 package Commands;
-import Receiver_Invoker.Receiver;
+
+import Commands.Receiver_Invoker.Receiver;
+
 public class AcCommand implements Command {
     Receiver receiver;
-    public AcCommand(Receiver thatReceiver){
+
+    public AcCommand(Receiver thatReceiver) {
         this.receiver = thatReceiver;
     }
+
     @Override
-    public void execute(){
+    public void execute() {
         receiver.ac();
     }
 }

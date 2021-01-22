@@ -1,12 +1,16 @@
 package Commands;
-import Receiver_Invoker.Receiver;
+
+import Commands.Receiver_Invoker.Receiver;
+
 public class KaydetCommand implements Command {
     Receiver receiver;
-    public KaydetCommand(Receiver thatReceiver){
+
+    public KaydetCommand(Receiver thatReceiver) {
         this.receiver = thatReceiver;
     }
+
     @Override
-    public void execute(){
+    public void execute() {
         receiver.kaydet();
     }
 }

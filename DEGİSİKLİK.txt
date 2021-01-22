@@ -1,7 +1,0 @@
-YAPILAN DEĞİŞİKLİKLER
-
-1. SORU:
-	Geri alma fonksiyonu geriAl()'ı kapsayan Receiver_Invoker.Receiver class'ı oluşturuldu.
-	Commands.Command isimli interface oluşturuldu. Bu interface'de execute() metodu var.
-	Commands.Command interface'ini implemente eden ve execute() metodunu @Override ederek Receiver_Invoker.Receiver üzerinden geriAl metodunu çağırmasını sağlayan Commands.GeriAlCommand class'ı oluşturuldu.
-	Receiver_Invoker.Invoker oluşturuldu. Receiver_Invoker.Invoker executeGeriAl metodu ile Interface üzerinden Receiver_Invoker.Receiver'dan geriAl metodunu çağırmayı sağlıyor.

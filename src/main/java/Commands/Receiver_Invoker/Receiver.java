@@ -1,12 +1,17 @@
-package Receiver_Invoker;
+package Commands.Receiver_Invoker;
 
 import javax.swing.*;
 import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
-import Main.*;
+import java.util.Scanner;
+
+import Memento_Originator_Caretaker.Caretaker;
+import Memento_Originator_Caretaker.Originator;
 
 public class Receiver {
-    private TextChangeStack stack;
+    Caretaker caretaker;
+    Originator originator;
     private JTextArea textArea;
     private JFrame frame;
     private String command;
@@ -17,48 +22,87 @@ public class Receiver {
     private String[] parsedText; //verilen parametrelere göre kelimeleri teker teker alıp bir listeye atıyor.
     private JFileChooser fileChooser; // Bazı butonlarda gereken dosya seçme fonksiyonu için diyalog
 
-    public Receiver(TextChangeStack thatStack, JFrame aFrame, JTextArea aTextArea, String aCommand) {
-        setStack(thatStack);
-        setTextArea(aTextArea);
-        setFrame(aFrame);
-        setTextArea(aTextArea);
+    public Receiver(Caretaker thatCaretaker, Originator thatOriginator,JFrame thatFrame, JTextArea thatTextArea, String thatCommand) {
+        caretaker = thatCaretaker;
+        originator = thatOriginator;
+        setTextArea(thatTextArea);
+        setFrame(thatFrame);
+        setTextArea(thatTextArea);
         setText(getTextArea().getText());
         setParsedText(getText().split("[ .,;\n]"));
-        setCommand(aCommand);   //NotepadGUI sınıfında fonksiyonları çağırmak için gerekli değişkenleri constructor ile alıyoruz.
+        setCommand(thatCommand);   //NotepadGUI sınıfında fonksiyonları çağırmak için gerekli değişkenleri constructor ile alıyoruz.
         setFileChooser(new JFileChooser());
         setSozluk(new Vocabulary("veri.txt"));
     }
 
     public void yeni() { // Yeni dosya
-        if (getTextArea().getText().equals("")) { //Eğer text area boşsa herhangi bir işlem yapılmıyor.
-        } else {                                  //Eğer boş değilse önce kaydedip etmemek istediğinizi soruyor.
-            setResult(JOptionPane.showConfirmDialog(getFrame(), "Yeni dosya açmadan önce bu dosyayı kaydetmek ister misiniz?"));
+        if (getFrame().getTitle().equals("Ege Notepad App") & !getTextArea().getText().equals("")) {                                  //Eğer boş değilse önce kaydedip etmemek istediğinizi soruyor.
+            setResult(JOptionPane.showConfirmDialog(getFrame(), "Yeni dosya açmadan önce varolan yazınızı kaydetmek ister misiniz?"));
             if (getResult() == 0) {
                 kaydet();           // Kaydetmek isterseniz kaydet() fonksiyonunu çağırıp önce kaydediyor,
                 getTextArea().setText(""); // Sonra text area'yı temizleyip title'ı default'a ayarlıyor.
                 getFrame().setTitle("Ege Notepad App");
+                caretaker.emptyMementos();
             } else if (getResult() == 1) { //Kaydetmek istemezseniz direkt area temzileyip title atıyor.
                 getTextArea().setText("");
                 getFrame().setTitle("Ege Notepad App");
+                caretaker.emptyMementos();
+            }
+        } else if (!getFrame().getTitle().equals("Ege Notepad App")) {
+            if (checkIfSame(getDosya().getAbsolutePath(), getTextArea().getText())) {
+                getTextArea().setText("");
+                getFrame().setTitle("Ege Notepad App");
+                caretaker.emptyMementos();
+            } else {
+                setResult(JOptionPane.showConfirmDialog(getFrame(), "Yeni dosya açmadan önce bu dosyayı kaydetmek ister misiniz?"));
+                if (getResult() == 0) {
+                    kaydet();           // Kaydetmek isterseniz kaydet() fonksiyonunu çağırıp önce kaydediyor,
+                    getTextArea().setText(""); // Sonra text area'yı temizleyip title'ı default'a ayarlıyor.
+                    getFrame().setTitle("Ege Notepad App");
+                    caretaker.emptyMementos();
+                } else if (getResult() == 1) { //Kaydetmek istemezseniz direkt area temzileyip title atıyor.
+                    getTextArea().setText("");
+                    getFrame().setTitle("Ege Notepad App");
+                    caretaker.emptyMementos();
+                }
+
             }
         }
     }
 
     public void ac() { // Dosya aç
+        if (getFrame().getTitle().equals("Ege Notepad App") & !getTextArea().getText().equals("")) {
+            setResult(JOptionPane.showConfirmDialog(getFrame(), "Yeni dosya açmadan önce yaptığınız değişiklikleri kaydetmek ister misiniz?"));
+            if (getResult() == 0) {
+                kaydet();
+            }
+        }
+
+        if (!getFrame().getTitle().equals("Ege Notepad App") & !checkIfSame(getFrame().getTitle(), getTextArea().getText())) {
+            setResult(JOptionPane.showConfirmDialog(getFrame(), "Yeni dosya açmadan önce yaptığınız değişiklikleri kaydetmek ister misiniz?"));
+            if (getResult() == 0) {
+                kaydet();
+            }
+        }
+
         setResult(getFileChooser().showOpenDialog(null)); //Dosya açma diyaloğunu gösteriyor.
         if (getResult() == JFileChooser.APPROVE_OPTION) { // Eğer açmayı tercih etmişse
             setDosya(new File(getFileChooser().getSelectedFile().getAbsolutePath())); //Açılan dosyayı değişkene atıyor.
-            getFrame().setTitle(getDosya().getName()); // Title'ı dosya adı olarak ayarlıyor.
+            getFrame().setTitle(getDosya().getAbsolutePath()); // Title'ı dosya adı olarak ayarlıyor.
 
             try { //Açılan dosyanın içindekiler okunup en sonda text area'ya yansıtılıyor.
-                String s1 = "", sl = "";
+                String s1;
+                StringBuilder sl;
                 FileReader fileReader = new FileReader(getDosya());
                 BufferedReader bufferedReader = new BufferedReader(fileReader);
-                sl = bufferedReader.readLine();
+                sl = new StringBuilder(bufferedReader.readLine());
                 while ((s1 = bufferedReader.readLine()) != null) {
-                    sl = sl + "\n" + s1;
+                    sl.append("\n").append(s1);
                 }
-                getTextArea().setText(sl);
+                getTextArea().setText(sl.toString());
+                caretaker.emptyMementos();
+                originator.setState(sl.toString());
+                caretaker.add(originator.save());//Yeni bir karakter girildiğinde stack'e son halini ekliyor.
 
             } catch (Exception evt) { // Dosya açmada hata olursa uyarı veriyor.
                 JOptionPane.showMessageDialog(getFrame(), "Dosya açılamadı! Açmak istediğiniz dosyanın yerini kontrol ediniz.");
@@ -66,21 +110,31 @@ public class Receiver {
         }
     }
 
+
     public void kapat() { // Dosyayı Kapat
         if (getDosya() == null) { // Ağer açık dosya yoksa uyarı mesajı veriyor.
             JOptionPane.showMessageDialog(getFrame(), "Açık bir dosya yok.");
         } else {
-            setResult(JOptionPane.showConfirmDialog(getFrame(), "Dosyayı kapatmadan önce kaydetmek ister misiniz?"));
-            if (getResult() == 2) {
-                JOptionPane.showMessageDialog(getFrame(), "İşlem iptal edildi.");
-            } else {
-                if (getResult() == 0) {
-                    kaydet();
-                }
+            if (checkIfSame(getDosya().getAbsolutePath(), getTextArea().getText())) {
                 setDosya(null);  //Eğer açık dosya varsa önce dosya değişkenini null atıyor.
                 getFrame().setTitle("Ege Notepad App"); // Sonra title'ı default atayıp text area'yı temizliyor.
                 getTextArea().setText("");
                 JOptionPane.showMessageDialog(getFrame(), "Dosya kapatıldı."); // En sonda da mesajı gösteriyor.
+                caretaker.emptyMementos();
+            } else {
+                setResult(JOptionPane.showConfirmDialog(getFrame(), "Dosyayı kapatmadan önce kaydetmek ister misiniz?"));
+                if (getResult() == 2) {
+                    JOptionPane.showMessageDialog(getFrame(), "İşlem iptal edildi.");
+                } else {
+                    if (getResult() == 0) {
+                        kaydet();
+                    }
+                    setDosya(null);  //Eğer açık dosya varsa önce dosya değişkenini null atıyor.
+                    getFrame().setTitle("Ege Notepad App"); // Sonra title'ı default atayıp text area'yı temizliyor.
+                    getTextArea().setText("");
+                    JOptionPane.showMessageDialog(getFrame(), "Dosya kapatıldı."); // En sonda da mesajı gösteriyor.
+                    caretaker.emptyMementos();
+                }
             }
         }
     }
@@ -105,7 +159,7 @@ public class Receiver {
                     w.write(getTextArea().getText());
                     w.flush();
                     w.close();
-                    getFrame().setTitle(getDosya().getName()); //En sonda da kaydettiği dosyayı açmış şekilde bitiriyor.
+                    getFrame().setTitle(getDosya().getAbsolutePath()); //En sonda da kaydettiği dosyayı açmış şekilde bitiriyor.
                 } catch (IOException e) {
                     e.printStackTrace();
                     JOptionPane.showMessageDialog(getFrame(), "Veriler seçtiğiniz yere kaydedilemedi.");
@@ -131,16 +185,26 @@ public class Receiver {
     }
 
     public void geriAl() {
-        getStack().pop();
-        getTextArea().setText(getStack().peek());
+        if (getTextArea().getText().equals("")) {
+            try {
+                getTextArea().setText(caretaker.getMemento().getState());
+            } catch (Exception ignored) {
+            }
+        }
+        if (caretaker.mementoCount() <= 1) {
+            caretaker.remove();
+            getTextArea().setText("");
+        } else {
+            caretaker.remove();
+            getTextArea().setText(caretaker.getMemento().getState());
+            caretaker.remove();
+        }
     }
 
     public void hataliKelimeDuzelt() {// Hatalı kelimeleri düzeltiyor.
 
         for (String word : getParsedText()) { // for loopu text'deki sözcük sayısı kadar dönüyor.
-            if (getSozluk().getSozlukList().contains(word)) {
-                // Eğer kelime sözlükte varsa o kelime geçiliyor..
-            } else {
+            if (!getSozluk().getSozlukList().contains(word)) {
                 ArrayList<String> liste = new ArrayList<>(); // Doğru transpositionları tutan geçici liste
                 char[] wordChars = new char[word.length()];
                 word.getChars(0, word.length(), wordChars, 0);// Yoksa kelimeyi harflerine bölüp
@@ -167,13 +231,47 @@ public class Receiver {
         }
     }
 
+    public boolean checkIfSame(String path, String text) {
+        try {
+            File file = new File(path);
+            return text.equals(Files.readString(file.toPath()));
+        } catch (IOException e) {
+            return false;
+        }
 
-    public TextChangeStack getStack() {
-        return stack;
     }
 
-    public void setStack(TextChangeStack stack) {
-        this.stack = stack;
+    public static class Vocabulary {
+        private ArrayList<String> sozlukList;  // VOCABULARY SINIFININ TESTI VAR, TEST DOSYASINA BAKABILIRSINIZ.
+
+        public Vocabulary(String s) {
+            setSozlukList(vocabularySetter(s));
+        }
+
+        public ArrayList<String> vocabularySetter(String dosyaPath) {
+            try {
+                sozlukList = new ArrayList<>();
+                Scanner input = new Scanner(new File(dosyaPath)); // Dosya okuyup dosyadaki sözcükleri
+                while (input.hasNextLine()) {
+                    Scanner scanner = new Scanner(input.nextLine());
+                    while (scanner.hasNext()) {
+                        getSozlukList().add(scanner.next());
+                    }
+                }
+                return getSozlukList();
+            } catch (FileNotFoundException e) {
+                System.out.println("File not found!");
+                return null;
+            }
+        }
+
+        public ArrayList<String> getSozlukList() {
+            return sozlukList;
+        }
+
+        public void setSozlukList(ArrayList<String> sozlukList) {
+            this.sozlukList = sozlukList;
+        }
     }
 
     public String getText() {
@@ -247,4 +345,5 @@ public class Receiver {
     public void setSozluk(Vocabulary sozluk) {
         this.sozluk = sozluk;
     }
+
 }

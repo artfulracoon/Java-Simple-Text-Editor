@@ -1,8 +1,9 @@
 package Main;
 
 import Commands.*;
-import Receiver_Invoker.Invoker;
-import Receiver_Invoker.Receiver;
+import Commands.Receiver_Invoker.*;
+
+import Memento_Originator_Caretaker.*;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -13,7 +14,8 @@ import javax.swing.event.DocumentListener;
 class NotepadGUI extends JFrame implements ActionListener {
     private JFrame frame;
     private JTextArea textArea;
-    private TextChangeStack stack = new TextChangeStack(); //TextArea'daki değişiklikleri tutan stack queue.
+    Caretaker caretaker = new Caretaker();
+    Originator originator = new Originator();
 
     public NotepadGUI() { // GUI Constructor
         try {
@@ -76,13 +78,14 @@ class NotepadGUI extends JFrame implements ActionListener {
         getTextArea().getDocument().addDocumentListener(new DocumentListener() {// Bu listener textArea'daki değişimlerde
             @Override                                                           // devreye giren fonksiyonları kapsıyor.
             public void insertUpdate(DocumentEvent e) {
-                getStack().push(getTextArea().getText());//Yeni bir karakter girildiğinde stack'e son halini ekliyor.
+                originator.setState(getTextArea().getText());
+                caretaker.add(originator.save());//Yeni bir karakter girildiğinde stack'e son halini ekliyor.
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                getStack().pop();  // Bir karakter silindiğinde stackteki son update'i siliyor
-            }                      // ve bu sayede bir önceki haline dönüyor.
+                // caretaker.remove();  // Bir karakter silindiğinde stackteki son update'i siliyor
+            }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
@@ -92,7 +95,7 @@ class NotepadGUI extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent event) { // Tıklama durumlarında neler olacağını belirtiyoruz.
         Invoker invoker = new Invoker();
-        Receiver receiver = new Receiver(getStack(), getFrame(), getTextArea(), event.getActionCommand());
+        Receiver receiver = new Receiver(caretaker, originator, getFrame(), getTextArea(), event.getActionCommand());
 
         // Bu switch, butonlara basıldığında hangi aksiyonların gerçekleştirileceğini seçiyor.
         switch (event.getActionCommand()) {
@@ -122,11 +125,9 @@ class NotepadGUI extends JFrame implements ActionListener {
         this.textArea = textArea;
     }
 
-    public TextChangeStack getStack() {
-        return stack;
-    }
-
-    public void setStack(TextChangeStack stack) {
-        this.stack = stack;
+    public static class main {
+        public static void main(String[] args) {
+            NotepadGUI e = new NotepadGUI();
+        }
     }
 }

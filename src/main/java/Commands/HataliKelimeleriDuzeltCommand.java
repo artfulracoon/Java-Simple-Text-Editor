@@ -1,13 +1,17 @@
 package Commands;
-import Receiver_Invoker.Receiver;
+
+import Commands.Receiver_Invoker.Receiver;
+
 public class HataliKelimeleriDuzeltCommand implements Command {
 
     Receiver receiver;
-    public HataliKelimeleriDuzeltCommand(Receiver thatReceiver){
+
+    public HataliKelimeleriDuzeltCommand(Receiver thatReceiver) {
         this.receiver = thatReceiver;
     }
+
     @Override
-    public void execute(){
+    public void execute() {
         receiver.hataliKelimeDuzelt();
     }
 }
