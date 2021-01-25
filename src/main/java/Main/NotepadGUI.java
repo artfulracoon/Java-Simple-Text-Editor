@@ -54,8 +54,8 @@ class NotepadGUI extends JFrame implements ActionListener {
         geriAl.addActionListener(this);
         hataDuzelt.addActionListener(this);
 
-        duzenle.add(bulVeDegistir);
         duzenle.add(geriAl);
+        duzenle.add(bulVeDegistir);
         duzenle.add(hataDuzelt);
 
         menuBar.add(dosya);    //Menuye sekme butonları ekleniyor.
