@@ -3,6 +3,10 @@ package Commands.Receiver_Invoker;
 import Commands.Command;
 
 public class Invoker {
+    private static Invoker invoker = new Invoker();
+
+    private Invoker() {
+    }
 
     public void executeGeriAl(Command commands) {
         commands.execute();
@@ -30,5 +34,9 @@ public class Invoker {
 
     public void executeAc(Command commands) {
         commands.execute();
+    }
+
+    public static Invoker getInvoker() {
+        return invoker;
     }
 }

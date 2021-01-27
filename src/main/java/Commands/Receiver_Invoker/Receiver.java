@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import Memento_Originator_Caretaker.Caretaker;
@@ -22,7 +23,7 @@ public class Receiver {
     private String[] parsedText; //verilen parametrelere göre kelimeleri teker teker alıp bir listeye atıyor.
     private JFileChooser fileChooser; // Bazı butonlarda gereken dosya seçme fonksiyonu için diyalog
 
-    public Receiver(Caretaker thatCaretaker, Originator thatOriginator,JFrame thatFrame, JTextArea thatTextArea, String thatCommand) {
+    public Receiver(Caretaker thatCaretaker, Originator thatOriginator, JFrame thatFrame, JTextArea thatTextArea, String thatCommand) {
         caretaker = thatCaretaker;
         originator = thatOriginator;
         setTextArea(thatTextArea);
@@ -248,7 +249,7 @@ public class Receiver {
             setSozlukList(vocabularySetter(s));
         }
 
-        public ArrayList<String> vocabularySetter(String dosyaPath) {
+        public ArrayList<String> vocabularySetter(String dosyaPath)  {
             try {
                 sozlukList = new ArrayList<>();
                 Scanner input = new Scanner(new File(dosyaPath)); // Dosya okuyup dosyadaki sözcükleri

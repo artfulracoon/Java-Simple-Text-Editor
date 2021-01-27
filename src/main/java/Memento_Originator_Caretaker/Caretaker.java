@@ -22,7 +22,7 @@ public class Caretaker {
         return stack.size();
     }
 
-    public void emptyMementos(){
+    public void emptyMementos() {
         stack = new MementoStack();
     }
 

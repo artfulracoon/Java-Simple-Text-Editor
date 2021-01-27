@@ -84,7 +84,6 @@ class NotepadGUI extends JFrame implements ActionListener {
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                // caretaker.remove();  // Bir karakter silindiğinde stackteki son update'i siliyor
             }
 
             @Override
@@ -94,7 +93,7 @@ class NotepadGUI extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent event) { // Tıklama durumlarında neler olacağını belirtiyoruz.
-        Invoker invoker = new Invoker();
+        Invoker invoker = Invoker.getInvoker();
         Receiver receiver = new Receiver(caretaker, originator, getFrame(), getTextArea(), event.getActionCommand());
 
         // Bu switch, butonlara basıldığında hangi aksiyonların gerçekleştirileceğini seçiyor.
@@ -125,9 +124,8 @@ class NotepadGUI extends JFrame implements ActionListener {
         this.textArea = textArea;
     }
 
-    public static class main {
-        public static void main(String[] args) {
-            NotepadGUI e = new NotepadGUI();
+    public static class Main {
+        public static void main(String[] args) { new NotepadGUI();
         }
     }
 }
