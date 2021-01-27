@@ -2,7 +2,7 @@ package Commands;
 
 import Commands.Receiver_Invoker.Receiver;
 
-public class AcCommand implements Command {
+public class AcCommand implements ICommand {
     Receiver receiver;
 
     public AcCommand(Receiver thatReceiver) {

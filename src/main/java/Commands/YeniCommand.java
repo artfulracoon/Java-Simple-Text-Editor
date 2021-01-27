@@ -2,7 +2,7 @@ package Commands;
 
 import Commands.Receiver_Invoker.Receiver;
 
-public class YeniCommand implements Command {
+public class YeniCommand implements ICommand {
     Receiver receiver;
 
     public YeniCommand(Receiver thatReceiver) {

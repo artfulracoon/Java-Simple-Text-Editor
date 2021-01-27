@@ -2,7 +2,7 @@ package Commands;
 
 import Commands.Receiver_Invoker.Receiver;
 
-public class KelimeBulVeDegistirCommand implements Command {
+public class KelimeBulVeDegistirCommand implements ICommand {
     Receiver receiver;
 
     public KelimeBulVeDegistirCommand(Receiver thatReceiver) {

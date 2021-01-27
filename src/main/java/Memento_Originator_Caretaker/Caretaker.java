@@ -26,7 +26,7 @@ public class Caretaker {
         stack = new MementoStack();
     }
 
-    public class MementoStack {  //BASIT BIR STACK SINIFI, COMMENTLEMEYE GEREK DUYMADIM.
+    public static class MementoStack {  //BASIT BIR STACK SINIFI, COMMENTLEMEYE GEREK DUYMADIM.
         private List<Memento> changes = new ArrayList<>();
 
         public Memento peek() {

@@ -203,9 +203,16 @@ public class Receiver {
     }
 
     public void hataliKelimeDuzelt() {// Hatalı kelimeleri düzeltiyor.
-
+        Iterator<String> iterator = getSozluk().getSozlukList().iterator();
+        boolean check = false;
         for (String word : getParsedText()) { // for loopu text'deki sözcük sayısı kadar dönüyor.
-            if (!getSozluk().getSozlukList().contains(word)) {
+            while (iterator.hasNext()) {
+                if (iterator.next().equals(word)) {
+                    check = true;
+                    break;
+                }
+            }
+            if (!check) {
                 ArrayList<String> liste = new ArrayList<>(); // Doğru transpositionları tutan geçici liste
                 char[] wordChars = new char[word.length()];
                 word.getChars(0, word.length(), wordChars, 0);// Yoksa kelimeyi harflerine bölüp
@@ -243,13 +250,13 @@ public class Receiver {
     }
 
     public static class Vocabulary {
-        private ArrayList<String> sozlukList;  // VOCABULARY SINIFININ TESTI VAR, TEST DOSYASINA BAKABILIRSINIZ.
+        private ArrayList<String> sozlukList;
 
         public Vocabulary(String s) {
             setSozlukList(vocabularySetter(s));
         }
 
-        public ArrayList<String> vocabularySetter(String dosyaPath)  {
+        public ArrayList<String> vocabularySetter(String dosyaPath) {
             try {
                 sozlukList = new ArrayList<>();
                 Scanner input = new Scanner(new File(dosyaPath)); // Dosya okuyup dosyadaki sözcükleri

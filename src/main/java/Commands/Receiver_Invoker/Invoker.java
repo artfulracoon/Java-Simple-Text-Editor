@@ -1,38 +1,38 @@
 package Commands.Receiver_Invoker;
 
-import Commands.Command;
+import Commands.ICommand;
 
 public class Invoker {
-    private static Invoker invoker = new Invoker();
+    private static final Invoker invoker = new Invoker();
 
     private Invoker() {
     }
 
-    public void executeGeriAl(Command commands) {
+    public void executeGeriAl(ICommand commands) {
         commands.execute();
     }
 
-    public void executeHataliKelimeDuzelt(Command commands) {
+    public void executeHataliKelimeDuzelt(ICommand commands) {
         commands.execute();
     }
 
-    public void executeKapat(Command commands) {
+    public void executeKapat(ICommand commands) {
         commands.execute();
     }
 
-    public void executeKaydet(Command commands) {
+    public void executeKaydet(ICommand commands) {
         commands.execute();
     }
 
-    public void executeKelimeBulVeDegistir(Command commands) {
+    public void executeKelimeBulVeDegistir(ICommand commands) {
         commands.execute();
     }
 
-    public void executeYeni(Command commands) {
+    public void executeYeni(ICommand commands) {
         commands.execute();
     }
 
-    public void executeAc(Command commands) {
+    public void executeAc(ICommand commands) {
         commands.execute();
     }
 

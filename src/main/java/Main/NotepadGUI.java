@@ -124,8 +124,4 @@ class NotepadGUI extends JFrame implements ActionListener {
         this.textArea = textArea;
     }
 
-    public static class Main {
-        public static void main(String[] args) { new NotepadGUI();
-        }
-    }
 }

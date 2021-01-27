@@ -1,7 +1,5 @@
 package Memento_Originator_Caretaker;
 
-import javax.swing.*;
-
 public class Memento {
     private String state;
 

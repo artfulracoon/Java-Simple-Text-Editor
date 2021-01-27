@@ -2,7 +2,7 @@ package Commands;
 
 import Commands.Receiver_Invoker.Receiver;
 
-public class KapatCommand implements Command {
+public class KapatCommand implements ICommand {
     Receiver receiver;
 
     public KapatCommand(Receiver thatReceiver) {

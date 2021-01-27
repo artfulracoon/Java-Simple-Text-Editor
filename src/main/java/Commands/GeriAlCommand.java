@@ -2,7 +2,7 @@ package Commands;
 
 import Commands.Receiver_Invoker.Receiver;
 
-public class GeriAlCommand implements Command {
+public class GeriAlCommand implements ICommand {
 
     Receiver receiver;
 

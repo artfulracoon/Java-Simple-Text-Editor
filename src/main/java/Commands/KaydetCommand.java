@@ -2,7 +2,7 @@ package Commands;
 
 import Commands.Receiver_Invoker.Receiver;
 
-public class KaydetCommand implements Command {
+public class KaydetCommand implements ICommand {
     Receiver receiver;
 
     public KaydetCommand(Receiver thatReceiver) {

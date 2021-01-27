@@ -2,7 +2,7 @@ package Commands;
 
 import Commands.Receiver_Invoker.Receiver;
 
-public class HataliKelimeleriDuzeltCommand implements Command {
+public class HataliKelimeleriDuzeltCommand implements ICommand {
 
     Receiver receiver;
 
