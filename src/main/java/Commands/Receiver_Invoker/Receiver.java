@@ -8,8 +8,8 @@ import Memento_Originator_Caretaker.Caretaker;
 import Memento_Originator_Caretaker.Originator;
 
 public class Receiver {
-    Caretaker caretaker;
-    Originator originator;
+    private Caretaker caretaker;
+    private Originator originator;
     private JTextArea textArea;
     private JFrame frame;
     private String command;
@@ -19,8 +19,8 @@ public class Receiver {
     private JFileChooser fileChooser; // Bazı butonlarda gereken dosya seçme fonksiyonu için diyalog
 
     public Receiver(Caretaker thatCaretaker, Originator thatOriginator, JFrame thatFrame, JTextArea thatTextArea, String thatCommand) {
-        caretaker = thatCaretaker;
-        originator = thatOriginator;
+        setCaretaker(thatCaretaker);
+        setOriginator(thatOriginator);
         setTextArea(thatTextArea);
         setFrame(thatFrame);
         setTextArea(thatTextArea);
@@ -36,28 +36,28 @@ public class Receiver {
                 kaydet();           // Kaydetmek isterseniz kaydet() fonksiyonunu çağırıp önce kaydediyor,
                 getTextArea().setText(""); // Sonra text area'yı temizleyip title'ı default'a ayarlıyor.
                 getFrame().setTitle("Ege Notepad App");
-                caretaker.emptyMementos();
+                getCaretaker().emptyMementos();
             } else if (getResult() == 1) { //Kaydetmek istemezseniz direkt area temzileyip title atıyor.
                 getTextArea().setText("");
                 getFrame().setTitle("Ege Notepad App");
-                caretaker.emptyMementos();
+                getCaretaker().emptyMementos();
             }
         } else if (!getFrame().getTitle().equals("Ege Notepad App")) {
             if (checkIfSame(getDosya().getAbsolutePath(), getTextArea().getText())) {
                 getTextArea().setText("");
                 getFrame().setTitle("Ege Notepad App");
-                caretaker.emptyMementos();
+                getCaretaker().emptyMementos();
             } else {
                 setResult(JOptionPane.showConfirmDialog(getFrame(), "Yeni dosya açmadan önce bu dosyayı kaydetmek ister misiniz?"));
                 if (getResult() == 0) {
                     kaydet();           // Kaydetmek isterseniz kaydet() fonksiyonunu çağırıp önce kaydediyor,
                     getTextArea().setText(""); // Sonra text area'yı temizleyip title'ı default'a ayarlıyor.
                     getFrame().setTitle("Ege Notepad App");
-                    caretaker.emptyMementos();
+                    getCaretaker().emptyMementos();
                 } else if (getResult() == 1) { //Kaydetmek istemezseniz direkt area temzileyip title atıyor.
                     getTextArea().setText("");
                     getFrame().setTitle("Ege Notepad App");
-                    caretaker.emptyMementos();
+                    getCaretaker().emptyMementos();
                 }
 
             }
@@ -94,9 +94,9 @@ public class Receiver {
                     sl.append("\n").append(s1);
                 }
                 getTextArea().setText(sl.toString());
-                caretaker.emptyMementos();
-                originator.setState(sl.toString());
-                caretaker.add(originator.save());//Yeni bir karakter girildiğinde stack'e son halini ekliyor.
+                getCaretaker().emptyMementos();
+                getOriginator().setState(sl.toString());
+                getCaretaker().add(getOriginator().save());//Yeni bir karakter girildiğinde stack'e son halini ekliyor.
 
             } catch (Exception evt) { // Dosya açmada hata olursa uyarı veriyor.
                 JOptionPane.showMessageDialog(getFrame(), "Dosya açılamadı! Açmak istediğiniz dosyanın yerini kontrol ediniz.");
@@ -113,7 +113,7 @@ public class Receiver {
                 getFrame().setTitle("Ege Notepad App"); // Sonra title'ı default atayıp text area'yı temizliyor.
                 getTextArea().setText("");
                 JOptionPane.showMessageDialog(getFrame(), "Dosya kapatıldı."); // En sonda da mesajı gösteriyor.
-                caretaker.emptyMementos();
+                getCaretaker().emptyMementos();
             } else {
                 setResult(JOptionPane.showConfirmDialog(getFrame(), "Dosyayı kapatmadan önce kaydetmek ister misiniz?"));
                 if (getResult() == 2) {
@@ -126,7 +126,7 @@ public class Receiver {
                     getFrame().setTitle("Ege Notepad App"); // Sonra title'ı default atayıp text area'yı temizliyor.
                     getTextArea().setText("");
                     JOptionPane.showMessageDialog(getFrame(), "Dosya kapatıldı."); // En sonda da mesajı gösteriyor.
-                    caretaker.emptyMementos();
+                    getCaretaker().emptyMementos();
                 }
             }
         }
@@ -164,17 +164,17 @@ public class Receiver {
     public void geriAl() {
         if (getTextArea().getText().equals("")) {
             try {
-                getTextArea().setText(caretaker.getMemento().getState());
+                getTextArea().setText(getCaretaker().getMemento().getState());
             } catch (Exception ignored) {
             }
         }
-        if (caretaker.mementoCount() <= 1) {
-            caretaker.remove();
+        if (getCaretaker().mementoCount() <= 1) {
+            getCaretaker().remove();
             getTextArea().setText("");
         } else {
-            caretaker.remove();
-            getTextArea().setText(caretaker.getMemento().getState());
-            caretaker.remove();
+            getCaretaker().remove();
+            getTextArea().setText(getCaretaker().getMemento().getState());
+            getCaretaker().remove();
         }
     }
 
@@ -242,5 +242,21 @@ public class Receiver {
 
     public static void setDosya(File dosya) {
         Receiver.dosya = dosya;
+    }
+
+    public Caretaker getCaretaker() {
+        return caretaker;
+    }
+
+    public void setCaretaker(Caretaker caretaker) {
+        this.caretaker = caretaker;
+    }
+
+    public Originator getOriginator() {
+        return originator;
+    }
+
+    public void setOriginator(Originator originator) {
+        this.originator = originator;
     }
 }

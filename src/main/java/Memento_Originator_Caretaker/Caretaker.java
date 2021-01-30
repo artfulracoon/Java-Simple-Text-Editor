@@ -4,26 +4,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Caretaker {
-    MementoStack stack = new MementoStack();
+    private MementoStack stack = new MementoStack();
 
     public void add(Memento memento) {
-        stack.push(memento);
+        getStack().push(memento);
     }
 
     public Memento getMemento() {
-        return stack.peek();
+        return getStack().peek();
     }
 
     public void remove() {
-        stack.pop();
+        getStack().pop();
     }
 
     public int mementoCount() {
-        return stack.size();
+        return getStack().size();
     }
 
     public void emptyMementos() {
-        stack = new MementoStack();
+        setStack(new MementoStack());
+    }
+
+    public MementoStack getStack() {
+        return stack;
+    }
+
+    public void setStack(MementoStack stack) {
+        this.stack = stack;
     }
 
     public static class MementoStack {  //BASIT BIR STACK SINIFI, COMMENTLEMEYE GEREK DUYMADIM.

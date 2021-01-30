@@ -4,14 +4,22 @@ import Commands.Receiver_Invoker.Receiver;
 
 public class GeriAlCommand implements ICommand {
 
-    Receiver receiver;
+    private Receiver receiver;
 
     public GeriAlCommand(Receiver thatReceiver) {
-        this.receiver = thatReceiver;
+        this.setReceiver(thatReceiver);
     }
 
     @Override
     public void execute() {
-        receiver.geriAl();
+        getReceiver().geriAl();
+    }
+
+    public Receiver getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(Receiver receiver) {
+        this.receiver = receiver;
     }
 }

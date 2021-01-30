@@ -3,14 +3,22 @@ package Commands;
 import Commands.Receiver_Invoker.Receiver;
 
 public class KapatCommand implements ICommand {
-    Receiver receiver;
+    private Receiver receiver;
 
     public KapatCommand(Receiver thatReceiver) {
-        this.receiver = thatReceiver;
+        this.setReceiver(thatReceiver);
     }
 
     @Override
     public void execute() {
-        receiver.kapat();
+        getReceiver().kapat();
+    }
+
+    public Receiver getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(Receiver receiver) {
+        this.receiver = receiver;
     }
 }

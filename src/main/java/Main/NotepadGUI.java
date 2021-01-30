@@ -16,8 +16,8 @@ import javax.swing.event.DocumentListener;
 class NotepadGUI extends JFrame implements ActionListener {
     private JFrame frame;
     private JTextArea textArea;
-    Caretaker caretaker = new Caretaker();
-    Originator originator = new Originator();
+    private Caretaker caretaker = new Caretaker();
+    private Originator originator = new Originator();
 
     public NotepadGUI() { // GUI Constructor
         try {
@@ -80,8 +80,8 @@ class NotepadGUI extends JFrame implements ActionListener {
         getTextArea().getDocument().addDocumentListener(new DocumentListener() {// Bu listener textArea'daki değişimlerde
             @Override                                                           // devreye giren fonksiyonları kapsıyor.
             public void insertUpdate(DocumentEvent e) {
-                originator.setState(getTextArea().getText());
-                caretaker.add(originator.save());//Yeni bir karakter girildiğinde stack'e son halini ekliyor.
+                getOriginator().setState(getTextArea().getText());
+                getCaretaker().add(getOriginator().save());//Yeni bir karakter girildiğinde stack'e son halini ekliyor.
             }
 
             @Override
@@ -96,7 +96,7 @@ class NotepadGUI extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent event) { // Tıklama durumlarında neler olacağını belirtiyoruz.
         Invoker invoker = Invoker.getInvoker();
-        Receiver receiver = new Receiver(caretaker, originator, getFrame(), getTextArea(), event.getActionCommand());
+        Receiver receiver = new Receiver(getCaretaker(), getOriginator(), getFrame(), getTextArea(), event.getActionCommand());
 
         Mediator mediator = new Mediator();
         mediator.add(new KelimeBulVeDegistir(getTextArea(), getFrame()));
@@ -128,6 +128,22 @@ class NotepadGUI extends JFrame implements ActionListener {
 
     public void setTextArea(JTextArea textArea) {
         this.textArea = textArea;
+    }
+
+    public Caretaker getCaretaker() {
+        return caretaker;
+    }
+
+    public void setCaretaker(Caretaker caretaker) {
+        this.caretaker = caretaker;
+    }
+
+    public Originator getOriginator() {
+        return originator;
+    }
+
+    public void setOriginator(Originator originator) {
+        this.originator = originator;
     }
 
     public static class Main {

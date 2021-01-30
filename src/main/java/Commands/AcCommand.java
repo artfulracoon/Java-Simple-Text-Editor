@@ -3,15 +3,23 @@ package Commands;
 import Commands.Receiver_Invoker.Receiver;
 
 public class AcCommand implements ICommand {
-    Receiver receiver;
+    private Receiver receiver;
 
     public AcCommand(Receiver thatReceiver) {
-        this.receiver = thatReceiver;
+        this.setReceiver(thatReceiver);
     }
 
     @Override
     public void execute() {
-        receiver.ac();
+        getReceiver().ac();
+    }
+
+    public Receiver getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(Receiver receiver) {
+        this.receiver = receiver;
     }
 }
 
