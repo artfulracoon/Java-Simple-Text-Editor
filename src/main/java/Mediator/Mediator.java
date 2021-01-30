@@ -13,11 +13,14 @@ public class Mediator {
     }
 
     public void executeKelimeBul() {
-        kelimeBulVeDegistir.execute();
+        if (kelimeBulVeDegistir != null) {
+            kelimeBulVeDegistir.execute();
+        }
     }
 
     public void executeHataliKelime() {
-        hataliKelimeleriDuzelt.execute();
+        if (hataliKelimeleriDuzelt != null) {
+            hataliKelimeleriDuzelt.execute();
+        }
     }
 }
-

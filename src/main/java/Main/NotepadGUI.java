@@ -1,8 +1,8 @@
 package Main;
 
-import Commands.*;
 import Commands.Receiver_Invoker.*;
 
+import FunctionCommands.*;
 import Mediator.KelimeBulVeDegistir;
 import Memento_Originator_Caretaker.*;
 import Mediator.*;

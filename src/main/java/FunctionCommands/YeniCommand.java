@@ -1,17 +1,18 @@
-package Commands;
+package FunctionCommands;
 
+import Commands.ICommand;
 import Commands.Receiver_Invoker.Receiver;
 
-public class KapatCommand implements ICommand {
+public class YeniCommand implements ICommand {
     private Receiver receiver;
 
-    public KapatCommand(Receiver thatReceiver) {
+    public YeniCommand(Receiver thatReceiver) {
         this.setReceiver(thatReceiver);
     }
 
     @Override
     public void execute() {
-        getReceiver().kapat();
+        getReceiver().yeni();
     }
 
     public Receiver getReceiver() {

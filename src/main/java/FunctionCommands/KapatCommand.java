@@ -1,18 +1,18 @@
-package Commands;
+package FunctionCommands;
 
+import Commands.ICommand;
 import Commands.Receiver_Invoker.Receiver;
 
-public class GeriAlCommand implements ICommand {
-
+public class KapatCommand implements ICommand {
     private Receiver receiver;
 
-    public GeriAlCommand(Receiver thatReceiver) {
+    public KapatCommand(Receiver thatReceiver) {
         this.setReceiver(thatReceiver);
     }
 
     @Override
     public void execute() {
-        getReceiver().geriAl();
+        getReceiver().kapat();
     }
 
     public Receiver getReceiver() {

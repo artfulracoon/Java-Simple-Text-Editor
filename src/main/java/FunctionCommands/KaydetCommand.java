@@ -1,17 +1,18 @@
-package Commands;
+package FunctionCommands;
 
+import Commands.ICommand;
 import Commands.Receiver_Invoker.Receiver;
 
-public class AcCommand implements ICommand {
+public class KaydetCommand implements ICommand {
     private Receiver receiver;
 
-    public AcCommand(Receiver thatReceiver) {
+    public KaydetCommand(Receiver thatReceiver) {
         this.setReceiver(thatReceiver);
     }
 
     @Override
     public void execute() {
-        getReceiver().ac();
+        getReceiver().kaydet();
     }
 
     public Receiver getReceiver() {
@@ -22,4 +23,3 @@ public class AcCommand implements ICommand {
         this.receiver = receiver;
     }
 }
-

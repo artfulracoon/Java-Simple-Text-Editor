@@ -41,8 +41,12 @@ public class HataliKelimeleriDuzelt {
                     wordCharsPlaceholder[i] = wordCharsPlaceholder[i + 1];
                     wordCharsPlaceholder[i + 1] = placeholder;
                     String duzeltilmisWord = new String(wordCharsPlaceholder);
-                    if (getSozluk().getSozlukList().contains(duzeltilmisWord)) {
-                        liste.add(duzeltilmisWord);
+                    iterator = getSozluk().getSozlukList().iterator();
+                    while (iterator.hasNext()) {
+                        if (iterator.next().equals(duzeltilmisWord)) {
+                            liste.add(duzeltilmisWord);
+                            break;
+                        }
                     }
                 }
                 if (liste.size() > 1) {

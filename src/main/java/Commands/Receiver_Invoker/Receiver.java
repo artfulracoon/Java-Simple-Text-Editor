@@ -168,11 +168,11 @@ public class Receiver {
             } catch (Exception ignored) {
             }
         }
-        if (getCaretaker().mementoCount() <= 1) {
+        else if (getCaretaker().mementoCount() <= 1) {
             getCaretaker().remove();
             getTextArea().setText("");
         } else {
-            getCaretaker().remove();
+            //getCaretaker().remove();
             getTextArea().setText(getCaretaker().getMemento().getState());
             getCaretaker().remove();
         }

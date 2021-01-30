@@ -1,17 +1,19 @@
-package Commands;
+package FunctionCommands;
 
+import Commands.ICommand;
 import Commands.Receiver_Invoker.Receiver;
 
-public class YeniCommand implements ICommand {
+public class GeriAlCommand implements ICommand {
+
     private Receiver receiver;
 
-    public YeniCommand(Receiver thatReceiver) {
+    public GeriAlCommand(Receiver thatReceiver) {
         this.setReceiver(thatReceiver);
     }
 
     @Override
     public void execute() {
-        getReceiver().yeni();
+        getReceiver().geriAl();
     }
 
     public Receiver getReceiver() {
