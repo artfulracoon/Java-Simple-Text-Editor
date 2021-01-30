@@ -12,19 +12,11 @@ public class Invoker {
         commands.execute();
     }
 
-    public void executeHataliKelimeDuzelt(ICommand commands) {
-        commands.execute();
-    }
-
     public void executeKapat(ICommand commands) {
         commands.execute();
     }
 
     public void executeKaydet(ICommand commands) {
-        commands.execute();
-    }
-
-    public void executeKelimeBulVeDegistir(ICommand commands) {
         commands.execute();
     }
 

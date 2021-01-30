@@ -3,7 +3,9 @@ package Main;
 import Commands.*;
 import Commands.Receiver_Invoker.*;
 
+import Mediator.KelimeBulVeDegistir;
 import Memento_Originator_Caretaker.*;
+import Mediator.*;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -96,14 +98,18 @@ class NotepadGUI extends JFrame implements ActionListener {
         Invoker invoker = Invoker.getInvoker();
         Receiver receiver = new Receiver(caretaker, originator, getFrame(), getTextArea(), event.getActionCommand());
 
+        Mediator mediator = new Mediator();
+        mediator.add(new KelimeBulVeDegistir(getTextArea(), getFrame()));
+        mediator.add(new HataliKelimeleriDuzelt(getTextArea(), getFrame()));
+
         // Bu switch, butonlara basıldığında hangi aksiyonların gerçekleştirileceğini seçiyor.
         switch (event.getActionCommand()) {
             case "Yeni" -> invoker.executeYeni(new YeniCommand(receiver));  // Caseler ismen kendilerini açıklıyor. Fonksiyonlar Commands paketinde.
             case "Kaydet" -> invoker.executeKaydet(new KaydetCommand(receiver));
             case "Aç" -> invoker.executeAc(new AcCommand(receiver));
-            case "Kelime Bul ve Değiştir" -> invoker.executeKelimeBulVeDegistir(new KelimeBulVeDegistirCommand(receiver));
+            case "Kelime Bul ve Değiştir" -> mediator.executeKelimeBul();
             case "Geri Al" -> invoker.executeGeriAl(new GeriAlCommand(receiver));
-            case "Hatalı Kelimeleri Düzelt" -> invoker.executeHataliKelimeDuzelt(new HataliKelimeleriDuzeltCommand(receiver));
+            case "Hatalı Kelimeleri Düzelt" -> mediator.executeHataliKelime();
             case "Kapat" -> invoker.executeKapat(new KapatCommand(receiver));
         }
     }
@@ -124,4 +130,9 @@ class NotepadGUI extends JFrame implements ActionListener {
         this.textArea = textArea;
     }
 
+    public static class Main {
+        public static void main(String[] args) {
+            new NotepadGUI();
+        }
+    }
 }
