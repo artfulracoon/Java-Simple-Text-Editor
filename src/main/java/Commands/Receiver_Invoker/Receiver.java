@@ -172,7 +172,7 @@ public class Receiver {
             getCaretaker().remove();
             getTextArea().setText("");
         } else {
-            //getCaretaker().remove();
+            getCaretaker().remove();
             getTextArea().setText(getCaretaker().getMemento().getState());
             getCaretaker().remove();
         }

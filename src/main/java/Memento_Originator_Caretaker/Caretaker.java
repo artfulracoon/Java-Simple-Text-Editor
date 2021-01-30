@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Caretaker {
-    private MementoStack stack = new MementoStack();
+    private MementoStack stack;
+
+    public Caretaker(){
+        setStack(new MementoStack());
+    }
 
     public void add(Memento memento) {
         getStack().push(memento);
